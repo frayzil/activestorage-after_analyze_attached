@@ -1,3 +1,11 @@
+require "simplecov"
+SimpleCov.start "rails" do
+  add_filter "/test/"
+  add_filter "/bin/"
+  add_filter "lib/activestorage/after_analyze_attached/version.rb"
+  add_filter "lib/activestorage/after_analyze_attached/railtie.rb"
+end
+
 # Configure Rails Environment
 ENV["RAILS_ENV"] = "test"
 

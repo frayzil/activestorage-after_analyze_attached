@@ -1,5 +1,8 @@
 # Activestorage::AfterAnalyzeAttached
 
+[![CI](https://github.com/frayzil/activestorage-after_analyze_attached/actions/workflows/ci.yml/badge.svg)](https://github.com/frayzil/activestorage-after_analyze_attached/actions/workflows/ci.yml)
+[![Coverage](https://raw.githubusercontent.com/frayzil/activestorage-after_analyze_attached/main/.github/badges/coverage.svg)](https://github.com/frayzil/activestorage-after_analyze_attached/actions/workflows/ci.yml)
+
 A Rails gem that provides a callback for when Active Storage attachments are analyzed. This is particularly useful when you need to perform actions after Active Storage has analyzed an attachment, such as updating flags, triggering background jobs, or updating the UI.
 
 ## Why use this gem?

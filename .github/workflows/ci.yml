@@ -5,6 +5,9 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: write
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -23,13 +26,6 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-
-    # services:
-    #  redis:
-    #    image: redis
-    #    ports:
-    #      - 6379:6379
-    #    options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git pkg-config google-chrome-stable
@@ -46,8 +42,24 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
-          # REDIS_URL: redis://localhost:6379/0
         run: bin/test
+
+      - name: Generate coverage badge
+        if: github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p .github/badges
+          COVERAGE=$(ruby -e 'require "json"; puts JSON.parse(File.read("coverage/.last_run.json"))["result"]["line"].to_i')
+          COLOR=$([ $COVERAGE -ge 90 ] && echo "brightgreen" || ([ $COVERAGE -ge 80 ] && echo "yellow" || echo "red"))
+          curl -o .github/badges/coverage.svg "https://img.shields.io/badge/coverage-${COVERAGE}%25-${COLOR}"
+
+      - name: Commit and push coverage badge
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .github/badges/coverage.svg
+          git commit -m "Update coverage badge" || echo "No changes to commit"
+          git push
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
