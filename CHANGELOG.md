@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.0] - 2024-07-08
+
+### Added
+- Access to attachment and blob objects in callback methods
+- Example: `after_analyze_attached :avatar do |attachment, blob| ... end`
+
 ## [0.1.1] - 2024-05-23
 
 ### Changed
