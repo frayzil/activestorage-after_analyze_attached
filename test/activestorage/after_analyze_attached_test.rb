@@ -15,12 +15,22 @@ class Activestorage::AfterAnalyzeAttachedTest < ActiveSupport::TestCase
         content_type: "image/jpeg"
       )
 
+      @user.reload
+      assert_not_nil @user.avatar.metadata[:after_analyze_attached_called_at]
+      assert_equal "avatar", @user.avatar.metadata[:after_analyze_attached_attachment_name]
+      assert_equal @user.avatar.id, @user.avatar.metadata[:after_analyze_attached_attachment_id]
+
       100.times do
         @user.pictures.attach(
           io: File.open(Rails.root.join("../fixtures/files/test.jpg")),
           filename: "test.jpg",
           content_type: "image/jpeg"
         )
+
+        @user.reload
+        assert_not_nil @user.pictures.last.metadata[:after_analyze_attached_called_at]
+        assert_equal "pictures", @user.pictures.last.metadata[:after_analyze_attached_attachment_name]
+        assert_equal @user.pictures.last.id, @user.pictures.last.metadata[:after_analyze_attached_attachment_id]
       end
     end
 

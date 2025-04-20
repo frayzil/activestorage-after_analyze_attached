@@ -32,7 +32,7 @@ module ActiveStorage::AfterAnalyzeAttached
       attachments.each do |attachment|
         attachment_name = attachment.name.to_sym
         callbacks = self.class.after_analyze_attached_callbacks[attachment_name]
-        callbacks.each { instance_eval(&_1) }
+        callbacks.each { |callback| instance_exec(attachment, blob, &callback) }
       end
     end
   end
