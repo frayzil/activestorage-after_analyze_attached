@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    activestorage-after_analyze_attached (0.1.0)
+    activestorage-after_analyze_attached (0.1.1)
       rails (>= 8.0.1)
 
 GEM

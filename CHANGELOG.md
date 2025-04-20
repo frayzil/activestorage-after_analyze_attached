@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.1.1] - 2024-05-23
+
+### Changed
+- Patch release with minor improvements
+
 ## [0.1.0] - 2024-01-18
 
 ### Added
