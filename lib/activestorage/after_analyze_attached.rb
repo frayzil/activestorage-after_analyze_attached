@@ -28,12 +28,12 @@ module ActiveStorage::AfterAnalyzeAttached
     end
 
     def blob_analyzed(blob)
-      after_analyze_attached_callbacks(blob).each { instance_eval(&_1) }
-    end
-
-    def after_analyze_attached_callbacks(blob)
-      attachment_names = ActiveStorage::Attachment.where(blob: blob).pluck(:name).map(&:to_sym)
-      attachment_names.flat_map { |name| self.class.after_analyze_attached_callbacks[name] }
+      attachments = ActiveStorage::Attachment.where(blob: blob)
+      attachments.each do |attachment|
+        attachment_name = attachment.name.to_sym
+        callbacks = self.class.after_analyze_attached_callbacks[attachment_name]
+        callbacks.each { instance_eval(&_1) }
+      end
     end
   end
 end
