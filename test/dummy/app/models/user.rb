@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_one_attached :avatar
   has_many_attached :pictures
+  has_many_attached :documents
 
   after_analyze_attached :avatar do |attachment, blob|
     update_column(:avatar_analyzed, true)
@@ -16,5 +17,9 @@ class User < ApplicationRecord
     blob.metadata[:after_analyze_attached_attachment_name] = attachment.name
     blob.metadata[:after_analyze_attached_attachment_id] = attachment.id
     blob.save!
+  end
+
+  after_analyze_attached :documents do
+    update_column(:documents_analyzed, self.documents_analyzed + 1)
   end
 end

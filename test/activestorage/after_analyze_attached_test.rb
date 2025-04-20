@@ -36,5 +36,16 @@ class Activestorage::AfterAnalyzeAttachedTest < ActiveSupport::TestCase
 
     assert @user.reload.avatar_analyzed
     assert_equal 100, @user.pictures_analyzed
+
+    10.times do
+      @user.documents.attach(
+        io: File.open(Rails.root.join("../fixtures/files/test.txt")),
+        filename: "test.txt",
+        content_type: "text/plain"
+      )
+    end
+
+    assert @user.reload.documents_analyzed
+    assert_equal 10, @user.documents_analyzed
   end
 end
